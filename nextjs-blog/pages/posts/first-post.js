@@ -2,9 +2,10 @@ import Link from 'next/link';
 import Head from 'next/head';
 // next/script simplifies loading third-party scripts
 import Script from 'next/script';
+import Layout from '../../components/layout';
 
 const FirstPost = () => (
-  <>
+  <Layout>
     <Head>
       <title>First Post</title>
     </Head>
@@ -22,6 +23,6 @@ const FirstPost = () => (
     <h2>
       <Link href='/'>Back to home</Link>
     </h2>
-  </>
+  </Layout>
 );
 export default FirstPost;

@@ -1,0 +1,8 @@
+/* CSS modules that can be imported into React comps */
+/* CSS modules must end in .module.css */
+
+.container {
+  max-width: 36rem;
+  padding: 0 1rem;
+  margin: 3rem auto 6rem;
+}
