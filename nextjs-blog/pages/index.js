@@ -9,7 +9,7 @@ const Home = () => {
         <title>{siteTitle}</title>
       </Head>
       <section className={utilStyles.headingMd}>
-        <p>
+        <p className='text-red-500'>
           Hi, I'm Allyssa. I'm a software engineer and product manager with an
           eye for UX/UI! I enjoy creating apps with delightful user experiences
           :)
