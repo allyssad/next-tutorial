@@ -33,3 +33,25 @@ export function getSortedPostsData() {
     }
   });
 }
+
+// can fetch data from other sources, e.g. external API endpoint:
+export async function getSortedPostsDataFromAPI() {
+  //instead of the file system,
+  // fetch post data from an external API endpoint
+  const res = await fetch('...');
+  return res.json();
+}
+
+// can query the db directly:
+// import someDatabaseSDK from 'someDatabaseSDK'
+
+// const databaseClient = someDatabaseSDK.createClient(...);
+
+// export async function getSortedPostDataFromDB() {
+//   return databaseClient.query('SELECT posts...')
+// }
+
+// NOTE about getStaticProps
+// runs ONLY on the server-side - won't be included in JS bundle for browser. Means you can write code such as direct database queries without sending them to the browser
+// meant to be un at build time so you won't be able to use data that's only available during request time (e.g. query params or HTTP headers)
+// can only be exported from a "page"
