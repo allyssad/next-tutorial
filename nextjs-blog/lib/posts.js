@@ -55,3 +55,36 @@ export async function getSortedPostsDataFromAPI() {
 // runs ONLY on the server-side - won't be included in JS bundle for browser. Means you can write code such as direct database queries without sending them to the browser
 // meant to be un at build time so you won't be able to use data that's only available during request time (e.g. query params or HTTP headers)
 // can only be exported from a "page"
+
+// FETCHING DATA at REQUEST TIME using SERVER-SIDE RENDERING
+
+// use getServerSideProps instead of getStaticProps
+// use only when you need to pre-render a page whose data must be fetched at request time!
+
+export async function getServerSideProps(context) {
+  // "context" param contains request specific parameters
+  return {
+    props: {
+      // props for your component
+    },
+  };
+}
+
+// can also do both! pre-render without data and then load hte data on the client-side
+// works well for user dashboard pages
+// because a dashboard = private, user-specific pages, SEO is not relevant and page doesn't need to be pre-rednered
+// data is frequently updated, which requires request-time data fetching
+
+// SWR React hook for data fetching:
+import useSWR from 'swr';
+
+function Profile() {
+  const { data, error } = useSWR('/api/user', fetch);
+
+  if (error) return <div>failed to load</div>;
+  if (!data) return <div>loading...</div>;
+  return <div>hello {data.name}</div>;
+}
+
+// highly recommended for fetching data on client side
+// handles caching, revalidation, focus tracking, refetching on interval, and more
