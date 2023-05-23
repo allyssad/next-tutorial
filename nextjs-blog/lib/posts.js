@@ -34,13 +34,38 @@ export function getSortedPostsData() {
   });
 }
 
-// can fetch data from other sources, e.g. external API endpoint:
-export async function getSortedPostsDataFromAPI() {
-  //instead of the file system,
-  // fetch post data from an external API endpoint
-  const res = await fetch('...');
-  return res.json();
+export function getAllPostIds() {
+  const fileNames = fs.readdirSync(postsDirectory);
+  return fileNames.map((fileName) => {
+    return {
+      params: {
+        id: fileName.replace(/\.md$/, ''),
+      },
+    };
+  });
 }
+
+export function getPostData(id) {
+  const fullPath = path.join(postsDirectory, `${id}.md`);
+  const fileContents = fs.readFileSync(fullPath, 'utf8');
+
+  // Use gray-matter to parse the post metadata section
+  const matterResult = matter(fileContents);
+
+  // Combine the data with the id
+  return {
+    id,
+    ...matterResult.data,
+  };
+}
+
+// can fetch data from other sources, e.g. external API endpoint:
+// export async function getSortedPostsDataFromAPI() {
+//   //instead of the file system,
+//   // fetch post data from an external API endpoint
+//   const res = await fetch('...');
+//   return res.json();
+// }
 
 // can query the db directly:
 // import someDatabaseSDK from 'someDatabaseSDK'
@@ -61,30 +86,31 @@ export async function getSortedPostsDataFromAPI() {
 // use getServerSideProps instead of getStaticProps
 // use only when you need to pre-render a page whose data must be fetched at request time!
 
-export async function getServerSideProps(context) {
-  // "context" param contains request specific parameters
-  return {
-    props: {
-      // props for your component
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   // "context" param contains request specific parameters
+//   return {
+//     props: {
+//       // props for your component
+//     },
+//   };
+// }
 
+// CLIENT-SIDE RENDERING
 // can also do both! pre-render without data and then load hte data on the client-side
 // works well for user dashboard pages
 // because a dashboard = private, user-specific pages, SEO is not relevant and page doesn't need to be pre-rednered
 // data is frequently updated, which requires request-time data fetching
 
 // SWR React hook for data fetching:
-import useSWR from 'swr';
+// import useSWR from 'swr';
 
-function Profile() {
-  const { data, error } = useSWR('/api/user', fetch);
+// function Profile() {
+//   const { data, error } = useSWR('/api/user', fetch);
 
-  if (error) return <div>failed to load</div>;
-  if (!data) return <div>loading...</div>;
-  return <div>hello {data.name}</div>;
-}
+//   if (error) return <div>failed to load</div>;
+//   if (!data) return <div>loading...</div>;
+//   return <div>hello {data.name}</div>;
+// }
 
 // highly recommended for fetching data on client side
 // handles caching, revalidation, focus tracking, refetching on interval, and more

@@ -25,4 +25,6 @@ const FirstPost = () => (
     </h2>
   </Layout>
 );
-export default FirstPost;
+
+// no longer need this page with dynamic paths
+// export default FirstPost;
