@@ -57,3 +57,23 @@ return <h1>404 - Page Not Found</h1>;
 
 - new paths will be server-side rendered with getStaticProps
 - and cached for future requests so it only happens once per path
+
+# API ROUTES
+
+## Do Not Fetch an API Route from getStaticProps or getStaticPaths
+
+- Instead, write your server-side code directly in getStaticProps or getStaticPaths (or call a helper function).
+- getStaticProps and getStaticPaths run only on the server-side and will never run on the client-side
+
+### HANDLING INPUT FORMS
+
+- create a form on your page and have it send a POST request to your API Route
+- write code to directly save it to your database
+- API Route code will not be part of your client bundle, so you can safely write server-side code
+
+```
+export default function handler(req, res) {
+  const email = req.body.email;
+  // Then save email to your database, etc...
+}
+```
